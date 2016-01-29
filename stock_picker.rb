@@ -2,8 +2,6 @@
 
 def stock_picker(arr)
 
-  pairs = []
-#  i = 1
   biggest_difference = []
   difference = 0
 
