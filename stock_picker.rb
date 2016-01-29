@@ -14,14 +14,12 @@ def stock_picker(arr)
       if g - f > difference
         difference = g-f
         biggest_difference = [arr.index(f),arr.index(g)]
-        #puts "#{g}-#{f}=#{g-f}"
       end
     end
-    #pairs << biggest_difference
-    #i += 1
+
   end
 
-biggest_difference
+puts "Best deal: [#{biggest_difference[0]},#{biggest_difference[1]}]"
 
 end
 
