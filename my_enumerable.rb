@@ -39,7 +39,7 @@ module Enumerable
     i=0
     not_true_count=0
     if !block_given?
-      while i < self.length do
+      while i < self.size do
         not_true_count+=1 if self.to_a[i]==nil || self.to_a[i]==false
         i+=1
       end
@@ -57,12 +57,12 @@ module Enumerable
     i=0
     true_count=0
     if !block_given?
-      while i < self.length do
+      while i < self.size do
         true_count+=1 if self.to_a[i]!=nil && self.to_a[i]!=false
         i+=1
       end
     else
-      while i < self.length do
+      while i < self.size do
         true_count+=1 if yield(self.to_a[i])==true
         i+=1
       end
@@ -75,12 +75,12 @@ module Enumerable
     i=0
     true_count=0
     if !block_given?
-      while i < self.length do
+      while i < self.size do
         true_count+=1 if self.to_a[i]!=nil && self.to_a[i]!=false
         i+=1
       end
     else
-      while i < self.length do
+      while i < self.size do
         true_count+=1 if yield(self.to_a[i])==true
         i+=1
       end
@@ -98,7 +98,7 @@ module Enumerable
       my_each {|x| count+=1 if x==item}
     end
     if block_given? && item==nil
-      while i < self.length do
+      while i < self.size do
         count +=1 if yield(self.to_a[i])==true
         i+=1
       end
@@ -108,7 +108,14 @@ module Enumerable
 
 
   def my_map
-
+    i=0
+    arr=[]
+    self if !block_given?
+    while i < self.size
+      arr << yield(self.to_a[i])# if yield(self.to_a[i])!=false
+      i+=1
+    end
+    arr
   end
 
 
@@ -130,4 +137,7 @@ b = {}
 #b.my_each {|key, value| puts key, value}
 #b.my_each {|key, value| puts key, value}
 #a.each {|x| puts x}
-puts a.my_count(1) {|i| i.is_a?(Integer) }
+puts a.my_map {|i| i.is_a?(Integer) }
+
+#c = (1..4).my_map {|i| i+i}
+#puts c
