@@ -1,4 +1,5 @@
 #recreating some enumerable methods
+#using while-looping here instead of eg #upto to be a little more manual
 
 module Enumerable
   def my_each
@@ -118,10 +119,51 @@ module Enumerable
     arr
   end
 
+#can't figure out how to my_inject make it work taking a symbol
+#so I cheated and took a look at Mauricio Linhares' ramblings:
+#http://mauricio.github.io/2015/01/12/implementing-enumerable-in-ruby.html
 
-  def my_inject
+#trying to make it look my own tho
 
+  def my_inject(initial=nil, sym=nil, &block)
+    if initial==nil && sym==nil && block==nil?
+      raise ArgumentError, "you must provide an argument or a block"
+    end
+
+    if sym && block
+      raise ArgumentError, "you must provide an operation symbol or a bloc, not both"
+    end
+
+    if sym==nil && block==nil
+      sym = initial
+      initial = nil
+    end
+
+    block = case sym
+    when Symbol
+      lambda {|x, y| x.send(sym, y)}
+    when nil
+      block
+    else
+      raise ArgumentError, "the operation provided must be a symbol"
+    end
+
+    if initial==nil
+      ignore_first = true
+      initial = self.first
+    end
+
+    i=0
+
+    my_each do |element|
+      unless ignore_first && i==0
+        initial = block.call(initial, element)
+      end
+      i+=1
+    end
+    initial
   end
+
 
 
 end
@@ -130,14 +172,21 @@ end
 #some testing
 
 a = ["koira","kissa","pupu",1,2,3,4,5]
-#a = [false, nil]
 b = {}
+c = ["koira","kissa","pupu"]
+d = [2,3,4,5]
+#a = [false, nil]
+
 #a.my_each {|i| puts i}
 #a.my_each_with_index { |item, index| b[item] = index }
 #b.my_each {|key, value| puts key, value}
 #b.my_each {|key, value| puts key, value}
 #a.each {|x| puts x}
-puts a.my_map {|i| i.is_a?(Integer) }
-
+#puts a.my_map {|i| i.is_a?(Integer) }
+#product = d.my_inject(2) {|product, i| product * i}
+#product = d.my_inject {|sum,i| sum+i}
+product = d.my_inject(3,:+)
+#product = c.my_inject {|memo, word| memo.length < word.length ? word : memo}
+puts product
 #c = (1..4).my_map {|i| i+i}
 #puts c
