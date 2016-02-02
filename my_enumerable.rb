@@ -185,8 +185,13 @@ d = [2,3,4,5]
 #puts a.my_map {|i| i.is_a?(Integer) }
 #product = d.my_inject(2) {|product, i| product * i}
 #product = d.my_inject {|sum,i| sum+i}
-product = d.my_inject(3,:+)
+#def multiply_els(arr)
+#  arr.my_inject {|product, x| product *= x}
+#end
+#puts multiply_els([2,4,5])
+
+#product = d.my_inject(3,:+)
 #product = c.my_inject {|memo, word| memo.length < word.length ? word : memo}
-puts product
+#puts product
 #c = (1..4).my_map {|i| i+i}
 #puts c
