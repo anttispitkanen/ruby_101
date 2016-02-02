@@ -89,8 +89,21 @@ module Enumerable
   end
 
 
-  def my_count
-
+  def my_count(item=nil)
+    i=0
+    count=0
+    my_each {|x| count+=1} if item==nil && !block_given?
+    if item!=nil
+      $stderr.puts "warning: given block was not used" if block_given?
+      my_each {|x| count+=1 if x==item}
+    end
+    if block_given? && item==nil
+      while i < self.length do
+        count +=1 if yield(self.to_a[i])==true
+        i+=1
+      end
+    end
+    count
   end
 
 
@@ -109,12 +122,12 @@ end
 
 #some testing
 
-#a = ["koira","kissa","pupu",1,2,3,4,5]
-a = [false, nil]
+a = ["koira","kissa","pupu",1,2,3,4,5]
+#a = [false, nil]
 b = {}
 #a.my_each {|i| puts i}
 #a.my_each_with_index { |item, index| b[item] = index }
 #b.my_each {|key, value| puts key, value}
 #b.my_each {|key, value| puts key, value}
 #a.each {|x| puts x}
-puts a.my_none?# {|i| i.is_a?(Integer) }
+puts a.my_count(1) {|i| i.is_a?(Integer) }
