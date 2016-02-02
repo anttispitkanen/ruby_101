@@ -36,7 +36,20 @@ module Enumerable
 
 
   def my_all?
-
+    i=0
+    not_true_count=0
+    if !block_given?
+      while i < self.length do
+        not_true_count+=1 if self.to_a[i]==nil || self.to_a[i]==false
+        i+=1
+      end
+    else
+      while i < self.length do
+        not_true_count+=1 if yield(self.to_a[i]) == false
+        i+=1
+      end
+    end
+    not_true_count==0 ? true : false
   end
 
 
@@ -68,11 +81,13 @@ module Enumerable
 end
 
 
-a = ["koira","kissa","pupu", 1, 2,3,4,5]
+#some testing
+
+a = ["koira","kissa","pupu",1,2,3,4,5]
 b = {}
 #a.my_each {|i| puts i}
 #a.my_each_with_index { |item, index| b[item] = index }
 #b.my_each {|key, value| puts key, value}
 #b.my_each {|key, value| puts key, value}
 #a.each {|x| puts x}
-puts a.my_select {|i| i.to_i > 3 }
+puts a.my_all? {|i| i.is_a?(Integer) }
