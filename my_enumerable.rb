@@ -113,7 +113,7 @@ module Enumerable
     arr=[]
     self if !block_given?
     while i < self.size
-      arr << yield(self.to_a[i])# if yield(self.to_a[i])!=false
+      arr << yield(self.to_a[i])
       i+=1
     end
     arr
@@ -128,12 +128,6 @@ module Enumerable
     self if a_proc==nil
     my_each {|x| arr << a_proc.call(x)} if !block_given?
     my_each {|x| arr << a_proc.call(yield x)} if block_given?
-=begin
-    while i < self.size
-      arr << a_proc.call(self.to_a[i])# if yield(self.to_a[i])!=false
-      i+=1
-    end
-=end
     arr
   end
 
