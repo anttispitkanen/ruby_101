@@ -119,6 +119,25 @@ module Enumerable
     arr
   end
 
+# "modify my_map to take a proc instead"
+# takes a proc and a block
+# if a block is given and no proc is given raises error (#call undefined)
+  def my_map_modified(a_proc=nil)
+    i=0
+    arr=[]
+    self if a_proc==nil
+    my_each {|x| arr << a_proc.call(x)} if !block_given?
+    my_each {|x| arr << a_proc.call(yield x)} if block_given?
+=begin
+    while i < self.size
+      arr << a_proc.call(self.to_a[i])# if yield(self.to_a[i])!=false
+      i+=1
+    end
+=end
+    arr
+  end
+
+
 #can't figure out how to my_inject make it work taking a symbol
 #so I cheated and took a look at Mauricio Linhares' ramblings:
 #http://mauricio.github.io/2015/01/12/implementing-enumerable-in-ruby.html
@@ -177,6 +196,9 @@ c = ["koira","kissa","pupu"]
 d = [2,3,4,5]
 #a = [false, nil]
 
+ex_proc = Proc.new {|i| puts i if i > 2}
+d.my_map_modified(ex_proc) {|i| i*2}
+#puts "jep" if "koira".is_a?(String)
 #a.my_each {|i| puts i}
 #a.my_each_with_index { |item, index| b[item] = index }
 #b.my_each {|key, value| puts key, value}
