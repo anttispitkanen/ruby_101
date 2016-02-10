@@ -14,16 +14,14 @@ class Board
   def make_a_move(player)
     @symbol = player.symbol
     @move = gets.chomp.upcase.split("")
+
     @row = @move[0]
-    #puts "row :#{@row}"
+
     if @row != "A" && @row != "B" && @row != "C"
-      out_of_range
+      puts "That's outside the board!\nTry again!"
     end
+
     @column = @move[1].to_i
-    if @column < 1 || @column > 3
-      out_of_range
-    end
-    #puts "column: #{@column}"
 
     if @row == "A"
       @board_rows[0].modify_column(@column, @symbol)
@@ -32,10 +30,6 @@ class Board
     elsif @row == "C"
       @board_rows[2].modify_column(@column, @symbol)
     end
-  end
-
-  def out_of_range
-    puts "Out of range! \n\n"
   end
 
   def print_board
@@ -57,8 +51,22 @@ class Row
     @row[index-1] == "[ ]" ? true : false
   end
 
+  def column_within_range? (index)
+    if index >= 1 && index <= 3
+      true
+    else
+      false
+    end
+  end
+
   def modify_column (index, symbol) #choosing from 1-3 so index-1
-    @row[index-1] = "[#{symbol}]"
+    if column_free?(index) && column_within_range?(index)
+      @row[index-1] = "[#{symbol}]"
+    elsif !column_within_range?(index)
+      puts "That's outside the board! Try again."
+    elsif !column_free?(index)
+      puts "Already taken! Try again."
+    end
   end
 
   def print_row
@@ -97,13 +105,3 @@ while true do
   puts ""
   i+=1
 end
-
-#i = gets.chomp.upcase.split("")
-#puts i
-
-#print game.row
-
-#puts "   1  2  3"
-#puts "A "+"[ ][ ][ ]"
-#puts "B "+"[ ][O][X]"
-#puts "C "+"[X][ ][ ]"
