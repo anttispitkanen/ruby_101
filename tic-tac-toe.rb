@@ -54,12 +54,6 @@ class Board
     update_winning_rows
   end
 
-#  def illegal_move?
-#    if (@row != "A" && @row != "B" && @row != "C") || (@column < 1 && @column > 3)
-#      puts "Illegal move! Try again"
-#    end
-#  end
-
   def update_winning_rows
     @winning_rows = [[@row1.row[0], @row2.row[0], @row3.row[0]],  #vertical straights
                     [@row1.row[1], @row2.row[1], @row3.row[1]],
@@ -81,7 +75,6 @@ class Board
         @victory = false
       end
     end
-    #puts "Victory!"
     @victory
   end
 
@@ -152,9 +145,12 @@ class Player
     @symbol = symbol
   end
 end
-#class Element
-#end
 
+#########################
+#########################
+##Constructing the game##
+#########################
+#########################
 player1 = Player.new("Player 1", "X")
 player2 = Player.new("Player 2", "O")
 
@@ -171,11 +167,6 @@ while true do
   print "#{player_in_turn.name} make a move > "
   board.make_a_move(player_in_turn)
   board.print_board
-
-#  board.winning_rows.each do |i|
-#    i.each {|j| print j + ", "}
-#    puts ""
-#  end
 
   if board.victory?(player_in_turn)
     puts "Victory for #{player_in_turn.name}!"
