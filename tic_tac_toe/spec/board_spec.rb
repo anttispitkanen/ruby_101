@@ -1,0 +1,98 @@
+# spec/board_spec.rb
+
+#The tutorial used the old no-longer-supported have-method
+#(expect(board.grid).to have(3).things), I substituted it with
+#"#size".to eq 3
+
+#Tutorial used the old deprecated stub-method, so I replaced it
+#with allow-method, I left some commented-out examples of the
+#old syntax as an example. (context "#game_over")
+
+require "spec_helper"
+
+module TicTacToe
+  describe Board do
+
+    context "#initialize" do
+      it "initializes the board with a grid" do
+        expect { Board.new(grid: "grid") }.to_not raise_error
+      end
+
+      it "sets the grid with three rows by default" do
+        board = Board.new
+        expect(board.grid.size).to eq 3
+      end
+
+      it "creates three things in each row by default" do
+        board = Board.new
+        board.grid.each do |row|
+          expect(row.size).to eq 3
+        end
+      end
+    end
+
+    context "#grid" do
+      it "returns the grid" do
+        board = Board.new(grid: "blah")
+        expect(board.grid).to eq "blah"
+      end
+    end
+
+    context "#get_cell" do
+      it "returns the cell given in the (y,x) coordinate" do  #notice how this differs from the tutorial
+        grid = [
+          ["","",""],
+          ["","","something"],
+          ["","",""]
+        ]
+        board = Board.new(grid: grid)
+        expect(board.get_cell(1,2)).to eq "something"
+      end
+
+    end
+
+    context "#set_cell" do
+      it "updates the coordinate value" do
+        Cat = Struct.new(:value)
+        grid = [
+          [Cat.new("cool"),"",""],
+          ["","",""],
+          ["","",""]
+        ]
+        board = Board.new(grid: grid)
+        expect(board.get_cell(0,0).value).to eq "cool"
+        board.set_cell(0,0, "meow")
+        expect(board.get_cell(0,0).value).to eq "meow"
+      end
+    end
+
+    context "#game_over" do
+      it "returns :winner if winner?" do
+        board = Board.new
+        allow(board).to receive(:winner?) {true}
+        expect(board.game_over).to eq :winner
+      end
+
+      it "returns :draw if !winner? && draw?" do
+        board = Board.new
+        #board.stub(:winner?) {false}
+        #board.stub(:draw?) {true}
+        allow(board).to receive(:winner?) {false}
+        allow(board).to receive(:draw?) {true}
+        expect(board.game_over).to eq :draw
+      end
+
+      it "returns false if !winner? && !draw?" do
+        board = Board.new
+        #board.stub(:winner?) {false}
+        #board.stub(:draw?) {false}
+        allow(board).to receive(:winner?) {false}
+        allow(board).to receive(:draw?) {false}
+        expect(board.game_over).to eq false
+      end
+    end
+
+
+
+  end
+end
