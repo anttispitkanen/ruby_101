@@ -1,5 +1,8 @@
 #A turn-based two-player tic-tac-toe to be played on the command line.
 
+#This is a first stage version I completed to make it work regardless
+#of how unstructured and ugly it is. Version 2.0 will be a separate file.
+
 
 class Board
   attr_accessor :row1, :row2, :row3, :board_rows, :winning_rows
