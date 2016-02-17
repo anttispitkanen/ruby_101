@@ -3,6 +3,8 @@
 This is a version 2.0 of my first tic-tac-toe-game with (supposedly) much better structure.
 Following instructions from https://codequizzes.wordpress.com/2013/10/25/creating-a-tic-tac-toe-game-with-ruby/
 
+I don't bother improving this version of the game since the previous version has proper system for cecking and only allowing legal moves, albeit much worsely structured and all. This has any way been a good tutorial, especially since I had to do some digging to work out the corresponding newer Rspec syntax.
+
 ## Installation
 
 Add this line to your application's Gemfile:
