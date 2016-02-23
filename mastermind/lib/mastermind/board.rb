@@ -34,34 +34,16 @@ module Mastermind
       #print "corrects: ", number_of_absolute_corrects, "\n"
     end
 
-=begin
-    def check_row
-      number_of_absolute_corrects = 0
-      number_of_not_absolute_corrects = 0
-      i=0
-      while i < @computers_row.size do
-        if @computers_row[i] == @guess.row_numbers[i]
-          number_of_absolute_corrects+=1
-        end
-        i+=1
-      end
-      print "computer: ", @computers_row, "\n"
-      print "guess: ", @guess.row_numbers, "\n"
-      #return number_of_absolute_corrects
-      print "corrects: ", number_of_absolute_corrects, "\n"
-    end
-=end
-
     def check_absolute_corrects
       number_of_absolute_corrects = 0
-      print "\n\nGreetings from check_absolute_corrects, computers_row here is: "
+      #print "\n\nGreetings from check_absolute_corrects, computers_row here is: "
       (0...@computers_row.size).each do |i|
-        print @computers_row[i]
+        #print @computers_row[i]
         if @computers_row[i] == @guess.row_numbers[i]
           number_of_absolute_corrects+=1
         end
       end
-      print "\n\n"
+      #print "\n\n"
       return number_of_absolute_corrects
     end
 
@@ -80,7 +62,6 @@ module Mastermind
       mock_computers_row.each do |num|
         if mock_guess.any? {|x| x == num}
           number_of_semi_corrects+=1
-          #mock_computers_row.delete(num)
         end
       end
       return number_of_semi_corrects
