@@ -11,39 +11,47 @@ module Mastermind
     end
 
     def make_a_guess
-      #@guess = Row.new.choose_numbers_manually
       @guess.clear_row
       @guess.choose_numbers_manually
       check_row
-      #victory here
-      @guesses_left-=1
-      puts "\nYou have #{@guesses_left} guesses left.\n\n" if guesses_left?
+
+      if victory?
+        puts "Correct!"
+        puts "YOU WON"
+      else
+        @guesses_left-=1
+        if guesses_left?
+          puts "#{@guesses_left} guesses left.\n\n"
+        else
+          puts "Still wrong!"
+          puts "GAME OVER"
+        end
+      end
     end
 
     def guesses_left?
       @guesses_left > 0 ? true : false
     end
 
+    def victory?
+      check_absolute_corrects == 4 ? true : false
+    end
+
+
+    private
+
     def check_row
-      print "Corrects: ", check_absolute_corrects, "\n"
-      #victory if four of these
-      print "Semis: ", check_semi_corrects, "\n"
-      print "computer: ", @computers_row, "\n"
-      print "guess: ", @guess.row_numbers, "\n"
-      #return number_of_absolute_corrects
-      #print "corrects: ", number_of_absolute_corrects, "\n"
+      print "Corrects: ", check_absolute_corrects, ", "
+      print "Semis: ", check_semi_corrects, ", "
     end
 
     def check_absolute_corrects
       number_of_absolute_corrects = 0
-      #print "\n\nGreetings from check_absolute_corrects, computers_row here is: "
       (0...@computers_row.size).each do |i|
-        #print @computers_row[i]
         if @computers_row[i] == @guess.row_numbers[i]
           number_of_absolute_corrects+=1
         end
       end
-      #print "\n\n"
       return number_of_absolute_corrects
     end
 
@@ -59,14 +67,18 @@ module Mastermind
         end
       end
 
-      mock_computers_row.each do |num|
-        if mock_guess.any? {|x| x == num}
-          number_of_semi_corrects+=1
+      (0...mock_computers_row.size).each do |x|
+        (0...mock_guess.size).each do |y|
+          if mock_computers_row[x] == mock_guess[y]
+            mock_computers_row[x] = nil
+            mock_guess[y] = -1
+            number_of_semi_corrects+=1
+          end
         end
       end
+
       return number_of_semi_corrects
     end
-
 
   end
 end

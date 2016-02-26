@@ -28,31 +28,13 @@ module Mastermind
         end
         return @row_numbers
       end
-
-
-#      4.times do |i|
-#        while true
-#          puts "Give a number between 1 and 6: "
-#          number_to_add = gets.chomp.to_i
-#          if number_to_add > 0 && number_to_add < 7
-#            @row_numbers << number_to_add
-#            puts "#{i+1} given, #{3-i} to go!"
-#            break
-#          else
-#            puts "That won't do!"
-#          end
-#        end
-#      end
     end
 
     def choose_numbers_randomly
-      #@row_numbers.clear
       4.times do
         random_number = Random.rand(6)+1
         @row_numbers << random_number
       end
-      print "Computers numbers: "
-      print @row_numbers, "\n"#for testing
       return @row_numbers
     end
 
@@ -63,6 +45,6 @@ module Mastermind
     def clear_row
       @row_numbers.clear
     end
-    
+
   end
 end
