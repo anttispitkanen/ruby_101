@@ -4,7 +4,7 @@ module Mastermind
   class Board
     attr_reader :computers_row, :guess, :guesses_left
 
-    def initialize
+    def initialize()
       @guesses_left = 12
       @computers_row = Row.new.choose_numbers_randomly
       @guess = Row.new
@@ -27,6 +27,10 @@ module Mastermind
           puts "GAME OVER"
         end
       end
+    end
+
+    def computers_guess
+
     end
 
     def guesses_left?
