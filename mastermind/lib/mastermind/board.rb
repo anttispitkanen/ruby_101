@@ -2,14 +2,15 @@
 
 module Mastermind
   class Board
-    attr_reader :computers_row, :guess, :guesses_left, :computers_guesses
+    attr_reader :computers_row, :guess, :guesses_left, :previous_hits,
+                :previous_guess
 
     def initialize
       @guesses_left = 12
-      #@computers_row = Row.new.choose_numbers_randomly
       @computers_row = Row.new
       @guess = Row.new
-      @computers_guesses = []
+      @previous_hits = 0
+      @previous_guess = []
     end
 
     def make_a_guess
@@ -24,9 +25,13 @@ module Mastermind
           puts "#{@guesses_left} guesses left.\n\n"
         else
           puts "Still wrong!"
+          print "\ncorrect answer was ", @computers_row.row_numbers, "\n\n"
           puts "GAME OVER"
+          print "\n\n\n\n\n"
         end
       end
+      @previous_guess = Array.new(@guess.row_numbers)
+      number_of_total_hits
     end
 
     def create_manual_row
@@ -37,7 +42,6 @@ module Mastermind
     def create_computers_row
       @computers_row.clear_row
       @computers_row.choose_numbers_randomly
-      #print @computers_row.row_numbers, "\n"
     end
 
     def manual_guess
@@ -45,9 +49,45 @@ module Mastermind
       @guess.choose_numbers_manually
     end
 
-    def computers_guess
-      @guess.clear_row
+    def computers_first_guess
       @guess.choose_numbers_randomly
+      print @guess.row_numbers, "\n"
+      @previous_guess = Array.new(@guess.row_numbers)
+      number_of_total_hits
+    end
+
+    def computers_other_guess
+      @guess.clear_row
+      heads_or_tails = Random.rand(2)
+
+      if heads_or_tails == 0
+        while @guess.row_numbers.size < @previous_hits do
+          while true
+            i = Random.rand(4)
+            if @previous_guess[i] != nil
+              @guess.add_number(@previous_guess[i])
+              @previous_guess[i] = nil
+              break
+            end
+          end
+        end
+        add_amount_of_randoms(4-@previous_hits, @previous_guess)
+
+      else
+      while @guess.row_numbers.size < @previous_hits do
+        while true
+          i = Random.rand(4)
+          if @previous_guess[i] != nil
+            @guess.add_number(@previous_guess[i])
+            @previous_guess[i] = nil
+            break
+          end
+        end
+      end
+      add_amount_of_randoms(4-@previous_hits, @previous_guess)
+
+      end
+
       print @guess.row_numbers, "\n"
     end
 
@@ -60,15 +100,9 @@ module Mastermind
     end
 
 
-=begin
-  Need to make it so that when computer makes a guess the result is evaluated
-  and corrects+semis is returned. The sum is then used to include sum amount of
-  numbers from the previous guess to the new one, and the rest randomly
-  (and maybe excluding the ones from the previous guess).
-=end
-
 
     private
+
 
     def check_row
       print "Corrects: ", check_absolute_corrects, ", "
@@ -108,6 +142,22 @@ module Mastermind
       end
 
       return number_of_semi_corrects
+    end
+
+    def number_of_total_hits
+      @previous_hits = check_absolute_corrects + check_semi_corrects
+    end
+
+    def add_amount_of_randoms(amount, what_to_avoid)
+      amount.times do
+        while true
+          random_number = Random.rand(6)+1
+          if !what_to_avoid.include?(random_number)
+            @guess.add_number(random_number)
+            break
+          end
+        end
+      end
     end
 
   end

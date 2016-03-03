@@ -38,6 +38,10 @@ module Mastermind
       return @row_numbers
     end
 
+    def add_number (number)
+      @row_numbers << number
+    end
+
     def clear_row
       @row_numbers.clear
     end

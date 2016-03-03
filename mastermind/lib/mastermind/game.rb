@@ -21,7 +21,12 @@ module Mastermind
     def play_automatically
       @game_board.create_manual_row
       while true
-        @game_board.computers_guess
+        if @game_board.guesses_left == 12
+          @game_board.computers_first_guess
+        else
+          @game_board.computers_other_guess
+          puts "hello from else!"
+        end
         @game_board.make_a_guess
         break if @game_board.victory?
         break if !@game_board.guesses_left?
