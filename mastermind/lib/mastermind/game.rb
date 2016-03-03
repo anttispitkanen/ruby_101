@@ -9,7 +9,9 @@ module Mastermind
     end
 
     def play_manually
+      @game_board.create_computers_row
       while true
+        @game_board.manual_guess
         @game_board.make_a_guess
         break if @game_board.victory?
         break if !@game_board.guesses_left?
@@ -17,7 +19,13 @@ module Mastermind
     end
 
     def play_automatically
-
+      @game_board.create_manual_row
+      while true
+        @game_board.computers_guess
+        @game_board.make_a_guess
+        break if @game_board.victory?
+        break if !@game_board.guesses_left?
+      end
     end
 
   end

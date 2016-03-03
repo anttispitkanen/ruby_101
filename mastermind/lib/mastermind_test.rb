@@ -3,7 +3,7 @@
 root = File.expand_path("../", File.dirname(__FILE__))
 require "#{root}/lib/mastermind.rb"
 
-puts "Welcome to Mastermind!" #{}" Try to guess the code in 12 turns. \n\n"
+puts "Welcome to Mastermind!"
 puts "Do you want to guess the code yourself? (y/n)"
 ans = gets.chomp.upcase
 

@@ -2,17 +2,17 @@
 
 module Mastermind
   class Board
-    attr_reader :computers_row, :guess, :guesses_left
+    attr_reader :computers_row, :guess, :guesses_left, :computers_guesses
 
-    def initialize()
+    def initialize
       @guesses_left = 12
-      @computers_row = Row.new.choose_numbers_randomly
+      #@computers_row = Row.new.choose_numbers_randomly
+      @computers_row = Row.new
       @guess = Row.new
+      @computers_guesses = []
     end
 
     def make_a_guess
-      @guess.clear_row
-      @guess.choose_numbers_manually
       check_row
 
       if victory?
@@ -29,8 +29,26 @@ module Mastermind
       end
     end
 
-    def computers_guess
+    def create_manual_row
+      @computers_row.clear_row
+      @computers_row.choose_numbers_manually
+    end
 
+    def create_computers_row
+      @computers_row.clear_row
+      @computers_row.choose_numbers_randomly
+      #print @computers_row.row_numbers, "\n"
+    end
+
+    def manual_guess
+      @guess.clear_row
+      @guess.choose_numbers_manually
+    end
+
+    def computers_guess
+      @guess.clear_row
+      @guess.choose_numbers_randomly
+      print @guess.row_numbers, "\n"
     end
 
     def guesses_left?
@@ -42,6 +60,14 @@ module Mastermind
     end
 
 
+=begin
+  Need to make it so that when computer makes a guess the result is evaluated
+  and corrects+semis is returned. The sum is then used to include sum amount of
+  numbers from the previous guess to the new one, and the rest randomly
+  (and maybe excluding the ones from the previous guess).
+=end
+
+
     private
 
     def check_row
@@ -51,8 +77,8 @@ module Mastermind
 
     def check_absolute_corrects
       number_of_absolute_corrects = 0
-      (0...@computers_row.size).each do |i|
-        if @computers_row[i] == @guess.row_numbers[i]
+      (0...@computers_row.row_numbers.size).each do |i|
+        if @computers_row.row_numbers[i] == @guess.row_numbers[i]
           number_of_absolute_corrects+=1
         end
       end
@@ -60,7 +86,7 @@ module Mastermind
     end
 
     def check_semi_corrects
-      mock_computers_row = Array.new(@computers_row)
+      mock_computers_row = Array.new(@computers_row.row_numbers)
       mock_guess = Array.new(@guess.row_numbers)
       number_of_semi_corrects = 0
 

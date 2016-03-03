@@ -26,8 +26,8 @@ module Mastermind
         else
           puts "Numbers must be between 1 and 6!"
         end
-        return @row_numbers
       end
+      return @row_numbers
     end
 
     def choose_numbers_randomly
@@ -35,10 +35,6 @@ module Mastermind
         random_number = Random.rand(6)+1
         @row_numbers << random_number
       end
-      return @row_numbers
-    end
-
-    def get_row_numbers
       return @row_numbers
     end
 
